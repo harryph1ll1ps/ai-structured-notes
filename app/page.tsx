@@ -40,7 +40,7 @@ export default function HomePage() {
           <h1 className="text-3xl font-semibold tracking-tight">
             Structure Your Notes
           </h1>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-neutral-500">
             Paste messy notes. Get AI powered structure. (prototype)
           </p>
         </header>
@@ -53,7 +53,7 @@ export default function HomePage() {
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Patient reports headaches for 2 weeks..."
-              className="h-64 w-full resize-none rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-200"
+              className="h-64 w-full resize-none rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-200 text-neutral-900"
               /> 
             </div>
 
@@ -72,8 +72,8 @@ export default function HomePage() {
                         "rounded-full px-3 py-1.5 text-sm transition",
                         "border shadow-sm",
                         isActive
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50",
+                          ? "border-neutral-800 bg-neutral-800 text-white"
+                          : "border-neutral-200 bg-neutral-200 text-neutral-800 hover:bg-neutral-50",
                       ].join(" ")}
                     >
                       {m}
@@ -86,7 +86,7 @@ export default function HomePage() {
 
           <div className="space-y-2">
             <div className="text-sm font-medium">Output</div>
-            <div className="h-64 overflow-auto rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-sm whitespace-pre-wrap">
+            <div className="h-64 overflow-auto rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-sm whitespace-pre-wrap text-neutral-900">
                 {output}
           </div>
           
