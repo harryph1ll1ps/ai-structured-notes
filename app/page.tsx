@@ -1,17 +1,19 @@
 "use client";  // tells next.js this file should run on the client (in the browser), not on the server.
 import { useState, useMemo } from "react";
+import clsx from "clsx";
 
 
 type Mode = "summary" | "actions" | "questions";
 const MODES = ["summary", "actions", "questions"] as const; // as const makes it a list of literals, rather than simply strings
+const OUTPUT_PREVIEW_LIMIT = 200;
 
 
-function formatOutput(note: string, mode: Mode) {
-  const trimmed = note.trim()
-  if (!trimmed) return "Insert notes to see structured output here.";
+function formatOutput(note: string, mode: Mode): string {
+  const trimmedNote = note.trim()
+  if (!trimmedNote) return "Start typing notes to generate structured output...";
 
-  const preview = trimmed.slice(0,220);
-  const suffix = trimmed.length > 220 ? "..." : "";
+  const preview = trimmedNote.slice(0, OUTPUT_PREVIEW_LIMIT);
+  const suffix = trimmedNote.length > OUTPUT_PREVIEW_LIMIT ? "..." : "";
 
   switch (mode) {
     case "summary":
@@ -19,7 +21,7 @@ function formatOutput(note: string, mode: Mode) {
     case "actions":
       return `Action items:\n- ${preview}${suffix}`;
     case "questions":
-      return `Follow-up questions\n- What did you mean by "${preview.slice(0,40)}..."?`;
+      return `Follow-up questions:\n- What did you mean by "${preview.slice(0,40)}..."?`;
     default: {
       const _exhaustive: never = mode;
       return _exhaustive;
@@ -31,12 +33,12 @@ function formatOutput(note: string, mode: Mode) {
 export default function HomePage() {
 
   // set note and mode state variables
-  const [note, setNote] = useState<string>(""); // sets state as note === "", with setNote as a function for updating the value
-  const [mode, setMode] = useState<Mode>("summary");
+  const [rawNote, setRawNote] = useState<string>(""); // sets state as rawNote === "", with setRawNote as a function for updating the value
+  const [currentMode, setMode] = useState<Mode>("summary");
 
   
   // get the structured note output
-  const output = useMemo(() => formatOutput(note, mode), [note, mode]); // recomputes when 'node' or 'mode' changes (useMemo)
+  const output = useMemo(() => formatOutput(rawNote, currentMode), [rawNote, currentMode]); // recomputes when 'rawNote' or 'currentMode' changes (useMemo)
 
 
   // render the webpage
@@ -53,35 +55,40 @@ export default function HomePage() {
         </header>
 
         <section className="grid gap-6 md:grid-cols-2">
+
+          {/* Input */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Raw notes</label>
+              <label htmlFor="note-input" className="text-sm font-medium">Raw notes</label>
               <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)} // on event e, update the note value to the text inside the <textarea>
+              id="note-input"
+              value={rawNote}
+              onChange={(e) => setRawNote(e.target.value)} // on event e, update the rawNote value to the text inside the <textarea>
               placeholder="e.g. Patient reports headaches for 2 weeks..."
               className="h-64 w-full resize-none rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-200 text-neutral-900"
               /> 
             </div>
 
+            {/* Mode Selector */}
             <div className="space-y-2">
               <div className="text-sm font-medium">Mode</div>
               <div className="flex flex-wrap gap-2">
                 {MODES.map((m) => {
-                  const isActive = (m === mode);
+                  const isActive = (m === currentMode);
 
                   return (
                     <button
                       key={m}
                       type="button"
+                      aria-pressed={isActive}
                       onClick={() => setMode(m)}
-                      className={[
+                      className={clsx(
                         "rounded-full px-3 py-1.5 text-sm transition",
                         "border shadow-sm",
                         isActive
                           ? "border-white bg-neutral-800 text-white"
                           : "border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50",
-                      ].join(" ")} // join the ClassName together
+                  )}
                     >
                       {m}
                     </button>
@@ -91,11 +98,12 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Output */}
           <div className="space-y-2">
             <div className="text-sm font-medium">Output</div>
             <div className="h-64 overflow-auto rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-sm whitespace-pre-wrap text-neutral-900">
                 {output}
-          </div>
+            </div>
           
           <p className="text-xs text-neutral-500">
             Next: we'll replace this with a real `/api/generate` call.
