@@ -1,10 +1,9 @@
 "use client";  // tells next.js this file should run on the client (in the browser), not on the server.
 import { useState, useMemo } from "react";
 import clsx from "clsx";
-import { GenerateResponse, GenerateRequest } from "./types/generate";
+import { GenerateResponse, GenerateRequest, Mode } from "./types/generate";
 
 
-type Mode = "summary" | "actions" | "questions";
 type Status = "idle" | "loading" | "error";
 const MODES = ["summary", "actions", "questions"] as const; // as const makes it a list of literals, rather than simply strings
 
