@@ -1,9 +1,12 @@
-export type Mode = "summary" | "actions" | "questions";
+import { z } from "zod"; // zod enforces typescript at runtime
 
-export interface GenerateRequest {
-    note: string;
-    mode: Mode;
-}
+// control the user input using zod
+export const GenerateRequestSchema = z.object({
+    note: z.string().min(1),
+    mode: z.enum(["summary", "actions", "questions"]),
+});
+
+export type GenerateRequest = z.infer<typeof GenerateRequestSchema>;
 
 export interface GenerateResponse {
     output: string;

@@ -5,7 +5,9 @@ import { GenerateResponse } from "./types/generate";
 
 
 type Mode = "summary" | "actions" | "questions";
+type Status = "idle" | "loading" | "error";
 const MODES = ["summary", "actions", "questions"] as const; // as const makes it a list of literals, rather than simply strings
+
 
 
 export default function HomePage() {
@@ -15,10 +17,13 @@ export default function HomePage() {
   const [rawNote, setRawNote] = useState<string>(""); // sets state as rawNote === "", with setRawNote as a function for updating the value
   const [currentMode, setMode] = useState<Mode>("summary");
   const [structuredNote, setStructuredNote] = useState<string>("");
+  const [status, setStatus] = useState<Status>("idle");
 
 
   async function generateOutput() {
     // send a POST request with the 'note' & 'mode' to get the structured output
+    setStatus("loading");
+
     try{
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -35,8 +40,10 @@ export default function HomePage() {
 
       const data = (await res.json()) as GenerateResponse;
       setStructuredNote(data.output);
+      setStatus("idle");
     } catch {
       setStructuredNote("Something went wrong. Please try again.")
+      setStatus("error");
     }
   }
   
@@ -53,6 +60,7 @@ export default function HomePage() {
             Paste messy notes. Get AI powered structure. (prototype)
           </p>
         </header>
+
 
         <section className="grid gap-6 md:grid-cols-2">
 
@@ -88,23 +96,29 @@ export default function HomePage() {
                         isActive
                           ? "border-white bg-neutral-800 text-white"
                           : "border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50",
-                  )} // join the ClassName together
+                    )} // join the ClassName together
                     >
                       {m}
                     </button>
                   );
                 })}
               </div>
-
-                <button
-                type = "button"
-                onClick={() => generateOutput()}
-                className="rounded-xl border border-neutral-200 bg-neutral-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-neutral-800"
-              >
-                Generate
-              </button>
-
             </div>
+
+          <button
+            type = "button"
+            disabled={status === "loading"}
+            onClick={() => generateOutput()}
+            className={clsx(
+              "rounded-xl px-4 py-2 text-sm font-medium shadow-sm",
+              status === "loading"
+                ? "bg-neutral-400 text-white"
+                : "bg-neutral-900 text-white hover:bg-neutral-800"
+          )}
+          >
+            {status === "loading" ? "Generating…" : "Generate"}
+          </button>
+
           </div>
 
           {/* Output */}

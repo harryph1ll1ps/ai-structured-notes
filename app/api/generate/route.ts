@@ -1,13 +1,22 @@
 import { NextResponse } from "next/server";
-import { GenerateRequest, GenerateResponse } from "@/app/types/generate";
+import { GenerateRequest, GenerateRequestSchema, GenerateResponse } from "@/app/types/generate";
 const OUTPUT_PREVIEW_LIMIT = 200;
 
 
 export async function POST(req: Request) {
 
-    const body = (await req.json()) as GenerateRequest;
+    let parsed;
 
-    const trimmedText = body.note.trim();
+    try {
+        parsed = GenerateRequestSchema.parse(await req.json());
+    } catch {
+        return NextResponse.json<GenerateResponse>(
+            {output: "Invalid input."},
+            {status: 400}
+        );
+    }
+
+    const trimmedText = parsed.note.trim();
 
     if(!trimmedText) {
         return NextResponse.json<GenerateResponse>({
@@ -20,7 +29,7 @@ export async function POST(req: Request) {
 
     let output: string;
 
-    switch (body.mode) {
+    switch (parsed.mode) {
         case "summary":
             output = `Summary:\n- ${preview}${suffix}`;
             break;
