@@ -1,5 +1,5 @@
 "use client";  // tells next.js this file should run on the client (in the browser), not on the server.
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import { GenerateResponse, GenerateRequest, Mode } from "./types/generate";
 
