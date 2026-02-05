@@ -2,7 +2,7 @@ import { z } from "zod"; // zod enforces typescript at runtime
 
 // control the user input using zod
 export const GenerateRequestSchema = z.object({
-    note: z.string().min(1),
+    note: z.string(),
     mode: z.enum(["summary", "actions", "questions"]),
 });
 

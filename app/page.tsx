@@ -1,13 +1,12 @@
 "use client";  // tells next.js this file should run on the client (in the browser), not on the server.
 import { useState, useMemo } from "react";
 import clsx from "clsx";
-import { GenerateResponse } from "./types/generate";
+import { GenerateResponse, GenerateRequest } from "./types/generate";
 
 
 type Mode = "summary" | "actions" | "questions";
 type Status = "idle" | "loading" | "error";
 const MODES = ["summary", "actions", "questions"] as const; // as const makes it a list of literals, rather than simply strings
-
 
 
 export default function HomePage() {
@@ -25,13 +24,16 @@ export default function HomePage() {
     setStatus("loading");
 
     try{
+
+      const payload: GenerateRequest = {
+        note: rawNote,
+        mode: currentMode,
+      };
+
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" }, // "the body im sending is JSON"
-        body: JSON.stringify({
-          note: rawNote,
-          mode: currentMode,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if(!res.ok) {
@@ -42,7 +44,7 @@ export default function HomePage() {
       setStructuredNote(data.output);
       setStatus("idle");
     } catch {
-      setStructuredNote("Something went wrong. Please try again.")
+      setStructuredNote("Something went wrong. Please try again.");
       setStatus("error");
     }
   }
@@ -116,7 +118,7 @@ export default function HomePage() {
                 : "bg-neutral-900 text-white hover:bg-neutral-800"
           )}
           >
-            {status === "loading" ? "Generating…" : "Generate"}
+            {status === "loading" ? "Generating..." : "Generate"}
           </button>
 
           </div>
