@@ -34,5 +34,5 @@ export async function POST(req: Request) {
             output = "unsupported mode";
     }
 
-    return NextResponse.json<GenerateResponse>({ output });
+    return NextResponse.json<GenerateResponse>({ output: output });
 }

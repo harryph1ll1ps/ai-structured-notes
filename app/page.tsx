@@ -8,41 +8,21 @@ type Mode = "summary" | "actions" | "questions";
 const MODES = ["summary", "actions", "questions"] as const; // as const makes it a list of literals, rather than simply strings
 
 
-// function formatOutput(note: string, mode: Mode): string {
-//   const trimmedNote = note.trim()
-//   if (!trimmedNote) return "Start typing notes to generate structured output...";
-
-//   const preview = trimmedNote.slice(0, OUTPUT_PREVIEW_LIMIT);
-//   const suffix = trimmedNote.length > OUTPUT_PREVIEW_LIMIT ? "..." : "";
-
-//   switch (mode) {
-//     case "summary":
-//       return `Summary:\n- ${preview}${suffix}`;
-//     case "actions":
-//       return `Action items:\n- ${preview}${suffix}`;
-//     case "questions":
-//       return `Follow-up questions:\n- What did you mean by "${preview.slice(0,40)}..."?`;
-//     default: {
-//       const _exhaustive: never = mode;
-//       return _exhaustive;
-//     }
-//   }
-// }
-
-
 export default function HomePage() {
 
   // set note and mode state variables
+  // use state re-runs the component function each time the variable is updated
   const [rawNote, setRawNote] = useState<string>(""); // sets state as rawNote === "", with setRawNote as a function for updating the value
   const [currentMode, setMode] = useState<Mode>("summary");
   const [structuredNote, setStructuredNote] = useState<string>("");
 
 
   async function generateOutput() {
+    // send a POST request with the 'note' & 'mode' to get the structured output
     try{
       const res = await fetch("/api/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" }, // "the body im sending is JSON"
         body: JSON.stringify({
           note: rawNote,
           mode: currentMode,
@@ -59,11 +39,7 @@ export default function HomePage() {
       setStructuredNote("Something went wrong. Please try again.")
     }
   }
-
   
-  // get the structured note output
-  // const output = useMemo(() => formatOutput(rawNote, currentMode), [rawNote, currentMode]); // recomputes when 'rawNote' or 'currentMode' changes (useMemo)
-
 
   // render the webpage
   return (
@@ -97,7 +73,7 @@ export default function HomePage() {
             <div className="space-y-2">
               <div className="text-sm font-medium">Mode</div>
               <div className="flex flex-wrap gap-2">
-                {MODES.map((m) => {
+                {MODES.map((m) => { // for each mode create a button - varies depending on whether the button is active
                   const isActive = (m === currentMode);
 
                   return (
@@ -122,7 +98,7 @@ export default function HomePage() {
 
                 <button
                 type = "button"
-                onClick={generateOutput}
+                onClick={() => generateOutput()}
                 className="rounded-xl border border-neutral-200 bg-neutral-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-neutral-800"
               >
                 Generate
