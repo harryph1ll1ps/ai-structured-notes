@@ -44,8 +44,7 @@ function callOpenRouter() {
         return __generator(this, function (_f) {
             switch (_f.label) {
                 case 0:
-                    key = "REMOVED" //process.env.OPENROUTER_API_KEY;
-                    ;
+                    key = process.env.OPENROUTER_API_KEY;
                     if (!key) {
                         throw new Error("API key not found");
                     }
