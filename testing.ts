@@ -40,6 +40,8 @@ export async function callOpenRouter(): Promise<string> {
     return data.choices?.[0]?.message?.content ?? "";
 }
 
+
+// run main
 (async () => {
     const res = await callOpenRouter();
     console.log(res);

@@ -10,8 +10,8 @@ const MODES = ["summary", "actions", "questions"] as const; // as const makes it
 
 export default function HomePage() {
 
-  // set note and mode state variables
-  // use state re-runs the component function each time the variable is updated
+  // set state variables
+  // useState re-runs the component function each time the variable is updated
   const [rawNote, setRawNote] = useState<string>(""); // sets state as rawNote === "", with setRawNote as a function for updating the value
   const [currentMode, setMode] = useState<Mode>("summary");
   const [structuredNote, setStructuredNote] = useState<string>("");
@@ -23,7 +23,6 @@ export default function HomePage() {
     setStatus("loading");
 
     try{
-
       const payload: GenerateRequest = {
         note: rawNote,
         mode: currentMode,
@@ -97,7 +96,7 @@ export default function HomePage() {
                         isActive
                           ? "border-white bg-neutral-800 text-white"
                           : "border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50",
-                    )} // join the ClassName together
+                    )} // join the ClassName together using clsx
                     >
                       {m}
                     </button>

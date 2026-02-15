@@ -34,7 +34,7 @@ export async function callOpenRouter(prompt: string): Promise<string> {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "model": "openai/gpt-oss-20b:free",
+            "model": "tngtech/deepseek-r1t2-chimera:free",
             "messages": [
                 {
                     "role": "user",
@@ -69,7 +69,7 @@ export async function generateStructuredOutput(note: string, mode: Mode): Promis
     }
 
     const prompt = buildPrompt(trimmedText, mode);
-    const outputText = await callOpenRouter(prompt)
+    const outputText = await callOpenRouter(prompt);
 
     return outputText
 
