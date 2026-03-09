@@ -1,4 +1,5 @@
 import { Mode, OpenRouterResponse } from "@/app/types/generate";
+import { GoogleGenAI } from "@google/genai";
 
 
 function buildPrompt(note: string, mode: Mode): string {
@@ -19,59 +20,78 @@ function buildPrompt(note: string, mode: Mode): string {
     } 
 }
 
-export async function callOpenRouter(prompt: string): Promise<string> {
-    
-    const key = process.env.OPENROUTER_API_KEY;
 
-    if (!key) {
-        throw new Error("API key not found");
-    }
+// gemini javascript instructions
+const ai = new GoogleGenAI({});
+const key = process.env.GEMINI_API_KEY;
 
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${key}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "model": "tngtech/deepseek-r1t2-chimera:free",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": `${prompt}`
-                }
-            ]
-        })
+async function main() {
+    const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: "Explain how AI works in a few words",
     });
+    console.log(response.text)
+}
+
+await main();
+
+
+
+// export async function generateStructuredOutput(note: string, mode: Mode): Promise<string> {
+//     const trimmedText = note.trim();
+
+//     if(!trimmedText) {
+//         return "Start typing notes to generate structured output...";
+//     }
+
+//     const prompt = buildPrompt(trimmedText, mode);
+//     const outputText = await callOpenRouter(prompt);
+
+//     return outputText
+
+
+// }
+
+
+
+
+// export async function callOpenRouter(prompt: string): Promise<string> {
     
-    if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`OpenRouter error ${res.status}: ${text}`);
-    }
+//     const key = process.env.OPENROUTER_API_KEY;
 
-    let data: OpenRouterResponse;
+//     if (!key) {
+//         throw new Error("API key not found");
+//     }
 
-    try {
-        data = (await res.json()) as OpenRouterResponse;
-    } catch {
-        throw new Error("Invalid JSON response from OpenRouter");
-    }
+//     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+//         method: "POST",
+//         headers: {
+//             "Authorization": `Bearer ${key}`,
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({
+//             "model": "tngtech/deepseek-r1t2-chimera:free",
+//             "messages": [
+//                 {
+//                     "role": "user",
+//                     "content": `${prompt}`
+//                 }
+//             ]
+//         })
+//     });
+    
+//     if (!res.ok) {
+//         const text = await res.text();
+//         throw new Error(`OpenRouter error ${res.status}: ${text}`);
+//     }
 
-    return data.choices?.[0]?.message?.content ?? "";
-}
+//     let data: OpenRouterResponse;
 
+//     try {
+//         data = (await res.json()) as OpenRouterResponse;
+//     } catch {
+//         throw new Error("Invalid JSON response from OpenRouter");
+//     }
 
-export async function generateStructuredOutput(note: string, mode: Mode): Promise<string> {
-    const trimmedText = note.trim();
-
-    if(!trimmedText) {
-        return "Start typing notes to generate structured output...";
-    }
-
-    const prompt = buildPrompt(trimmedText, mode);
-    const outputText = await callOpenRouter(prompt);
-
-    return outputText
-
-
-}
+//     return data.choices?.[0]?.message?.content ?? "";
+// }

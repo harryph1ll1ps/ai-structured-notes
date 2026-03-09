@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     let parsed;
 
     try {
-        parsed = GenerateRequestSchema.parse(await req.json());
+        parsed = GenerateRequestSchema.parse(await req.json()); // gets req body and parses as json
     } catch {
         return NextResponse.json<GenerateResponse>(
             {output: "Invalid input."},
