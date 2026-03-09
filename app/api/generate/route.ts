@@ -1,23 +1,33 @@
 import { NextResponse } from "next/server";
-import { GenerateRequestSchema, GenerateResponse } from "@/app/types/generate";
+import { GenerateRequestSchema } from "@/app/types/generate";
 import { generateStructuredOutput } from "@/app/lib/generateStructuredOutput";
 
-
-
 export async function POST(req: Request) {
-
     let parsed;
 
     try {
-        parsed = GenerateRequestSchema.parse(await req.json()); // gets req body and parses as json
+        const body = await req.json();
+        parsed = GenerateRequestSchema.parse(body);
     } catch {
-        return NextResponse.json<GenerateResponse>(
-            {output: "Invalid input."},
-            {status: 400}
+        return NextResponse.json(
+            { error: "Invalid input." },
+            { status: 400 }
         );
     }
 
-    const output = generateStructuredOutput(parsed.note, parsed.mode);
+    try {
+        const output = await generateStructuredOutput(parsed.note, parsed.mode);
 
-    return NextResponse.json<GenerateResponse>({ output: output });
+        return NextResponse.json(
+            { output },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Generate route error:", error);
+
+        return NextResponse.json(
+            { error: "Failed to generate output." },
+            { status: 500 }
+        );
+    }
 }

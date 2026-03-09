@@ -39,6 +39,10 @@ export default function HomePage() {
       }
 
       const data = (await res.json()) as GenerateResponse;
+
+
+      console.log(`SUCCESS: ${data}`)
+
       setStructuredNote(data.output);
       setStatus("idle");
     } catch {
