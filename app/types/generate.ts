@@ -1,23 +1,15 @@
-import { z } from "zod"; // zod enforces typescript at runtime
+// supported output modes for structured note generation
+export const MODES = ["summary", "actions", "questions"] as const;
+export type Mode = (typeof MODES)[number];
 
-export type Mode = "summary" | "actions" | "questions";
 
-export type OpenRouterResponse = {
-  choices?: {
-    message?: {
-      content?: string;
-    };
-  }[];
-};
-
-// control the user input using zod
-export const GenerateRequestSchema = z.object({
-    note: z.string(),
-    mode: z.enum(["summary", "actions", "questions"]),
-});
-
-export type GenerateRequest = z.infer<typeof GenerateRequestSchema>;
+// request and response shapes for the structured note generation
+export interface GenerateRequest {
+  note: string;
+  mode: Mode;
+}
 
 export interface GenerateResponse {
-    output: string;
+  output: string;
 }
+

@@ -1,25 +1,30 @@
-"use client";  // tells next.js this file should run on the client (in the browser), not on the server.
+"use client";  // run on the client (in the browser), not on the server.
 import { useState } from "react";
 import clsx from "clsx";
 import { GenerateResponse, GenerateRequest, Mode } from "./types/generate";
 
 
+
+// UI state of the generation request.
 type Status = "idle" | "loading" | "error";
-const MODES = ["summary", "actions", "questions"] as const; // as const makes it a list of literals, rather than simply strings
+
+// Supported AI output modes for transforming notes.
+const MODES = ["summary", "actions", "questions"] as const;
+
 
 
 export default function HomePage() {
 
   // set state variables
-  // useState re-runs the component function each time the variable is updated
-  const [rawNote, setRawNote] = useState<string>(""); // sets state as rawNote === "", with setRawNote as a function for updating the value
+  const [rawNote, setRawNote] = useState<string>(""); 
   const [currentMode, setMode] = useState<Mode>("summary");
   const [structuredNote, setStructuredNote] = useState<string>("");
   const [status, setStatus] = useState<Status>("idle");
 
 
   async function generateOutput() {
-    // send a POST request with the 'note' & 'mode' to get the structured output
+    
+    // send POST request to get structured note response
     setStatus("loading");
 
     try{
