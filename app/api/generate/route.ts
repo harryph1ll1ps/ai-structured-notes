@@ -1,33 +1,43 @@
 import { NextResponse } from "next/server";
-import { GenerateRequestSchema } from "@/app/types/structure";
-import { generateStructuredOutput } from "@/app/lib/generateStructuredOutput";
+import { MODES, StructureRequest } from "@/app/types/structure";
+import { structureNote } from "@/app/lib/structureNote";
 
 export async function POST(req: Request) {
-    let parsed;
+  try {
+    const json = await req.json();
 
-    try {
-        const body = await req.json();
-        parsed = GenerateRequestSchema.parse(body);
-    } catch {
-        return NextResponse.json(
-            { error: "Invalid input." },
-            { status: 400 }
-        );
+    // check if the inputs are valid
+    if (
+      typeof json.note !== "string" ||
+      typeof json.mode !== "string" ||
+      !MODES.includes(json.mode as StructureRequest["mode"])
+    ) {
+      return NextResponse.json(
+        { error: "Invalid input." },
+        { status: 400 }
+      );
     }
 
-    try {
-        const output = await generateStructuredOutput(parsed.note, parsed.mode);
+    // if the inputs are valid, update body object
+    const body: StructureRequest = {
+      note: json.note,
+      mode: json.mode as StructureRequest["mode"],
+    };
 
-        return NextResponse.json(
-            { output },
-            { status: 200 }
-        );
-    } catch (error) {
-        console.error("Generate route error:", error);
+    // call the structureNote function with body and return status
+    const output = await structureNote(body.note, body.mode);
+    return NextResponse.json(
+      { output },
+      { status: 200 }
+    );
+    
+  } catch (error) {
 
-        return NextResponse.json(
-            { error: "Failed to generate output." },
-            { status: 500 }
-        );
-    }
+    console.error("Structure route error:", error);
+
+    return NextResponse.json(
+      { error: "Failed to process request." },
+      { status: 500 }
+    );
+  }
 }

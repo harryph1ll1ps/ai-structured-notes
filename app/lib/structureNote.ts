@@ -47,7 +47,7 @@ async function callGemini(prompt: string): Promise<string> {
     }
 }
 
-export async function generateStructuredOutput(note: string, mode: Mode): Promise<string> {
+export async function structureNote(note: string, mode: Mode): Promise<string> {
     const trimmedText = note.trim();
 
     if (!trimmedText) {
