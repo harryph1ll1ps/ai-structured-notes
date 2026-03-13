@@ -1,4 +1,4 @@
-import { Mode } from "@/app/types/generate";
+import { Mode } from "@/app/types/structure";
 import { GoogleGenAI } from "@google/genai";
 
 function buildPrompt(note: string, mode: Mode): string {

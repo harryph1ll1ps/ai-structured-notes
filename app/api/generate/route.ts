@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GenerateRequestSchema } from "@/app/types/generate";
+import { GenerateRequestSchema } from "@/app/types/structure";
 import { generateStructuredOutput } from "@/app/lib/generateStructuredOutput";
 
 export async function POST(req: Request) {
