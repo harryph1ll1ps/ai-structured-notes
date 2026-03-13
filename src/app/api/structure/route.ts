@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { MODES, StructureRequest } from "@/app/types/structure";
-import { structureNote } from "@/app/lib/structureNote";
+import { MODES, StructureRequest } from "@/features/note-structuring/shared/types";
+import { structureNote } from "@/features/note-structuring/server/structure-note";
 
 export async function POST(req: Request) {
   try {

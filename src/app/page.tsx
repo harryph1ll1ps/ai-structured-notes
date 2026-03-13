@@ -1,7 +1,7 @@
 "use client";  // run on the client (in the browser), not on the server
 import { useState } from "react";
 import clsx from "clsx";
-import { MODES, StructureResponse, StructureRequest, Mode, Status } from "./types/structure";
+import { MODES, StructureResponse, StructureRequest, Mode, Status } from "../../features/note-structuring/shared/types";
 
 
 export default function HomePage() {
@@ -14,6 +14,7 @@ export default function HomePage() {
 
 
   async function structuredNoteOutput() {
+    console.log("hello;");
 
     // send POST request to get structured note response
     setStatus("loading");
@@ -26,7 +27,7 @@ export default function HomePage() {
         mode: currentMode,
       };
 
-      const res = await fetch("/api/generate", {
+      const res = await fetch("/api/structure", {
         method: "POST",
         headers: { "Content-Type": "application/json" }, // "the body im sending is JSON"
         body: JSON.stringify(payload),
