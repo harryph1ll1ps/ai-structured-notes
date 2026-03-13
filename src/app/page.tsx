@@ -2,7 +2,8 @@
 import { useState } from "react";
 import clsx from "clsx";
 import { MODES, StructureResponse, StructureRequest, Mode, Status } from "../../features/note-structuring/shared/types";
-
+import { structureNote } from "@/features/note-structuring/client/structured-note-client";
+import { NEXT_ROUTER_SEGMENT_PREFETCH_HEADER } from "next/dist/client/components/app-router-headers";
 
 export default function HomePage() {
 
@@ -12,49 +13,18 @@ export default function HomePage() {
   const [structuredNote, setStructuredNote] = useState<string>("");
   const [status, setStatus] = useState<Status>("idle");
 
-
-  async function structuredNoteOutput() {
-    console.log("hello;");
-
-    // send POST request to get structured note response
+  // a function for structuring the note
+  async function handleNoteStructuring() {
     setStatus("loading");
-
-    try{
-
-      // send note and mode to the server
-      const payload: StructureRequest = {
-        note: rawNote,
-        mode: currentMode,
-      };
-
-      const res = await fetch("/api/structure", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, // "the body im sending is JSON"
-        body: JSON.stringify(payload),
-      });
-
-      // if the server fails to respond correctly, throw an error to be caught
-      if(!res.ok) {
-        throw new Error("Failed to generate structured output");
-      }
-
-      // if successful, update the structured note variable
-      const data = (await res.json()) as StructureResponse;
-      console.log(`SUCCESS: ${data}`) // FOR TESTING - DELETE THIS LINE
-      setStructuredNote(data.output);
+    try {
+      const output = await structureNote(rawNote, currentMode);
+      setStructuredNote(output);
       setStatus("idle");
-
     } catch {
-      // in the case of an error, update the structured note variable with an error message
       setStructuredNote("Something went wrong. Please try again.");
       setStatus("error");
     }
   }
-  
-
-
-
-
 
   // render the webpage
   return (
@@ -116,7 +86,7 @@ export default function HomePage() {
           <button
             type = "button"
             disabled={status === "loading"}
-            onClick={() => structuredNoteOutput()}
+            onClick={() => handleNoteStructuring()}
             className={clsx(
               "rounded-xl px-4 py-2 text-sm font-medium shadow-sm",
               status === "loading"
