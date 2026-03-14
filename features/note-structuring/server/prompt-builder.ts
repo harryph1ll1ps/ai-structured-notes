@@ -1,5 +1,7 @@
 import { Mode } from "@/features/note-structuring/shared/types";
 
+
+
 export function buildPrompt(note: string, mode: Mode): string {
     switch (mode) {
         case "summary":

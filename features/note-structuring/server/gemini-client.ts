@@ -1,14 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
 export async function callGemini(prompt: string): Promise<string> {
+
+    // search for existing API key
     const key = process.env.GEMINI_API_KEY;
 
     if (!key) {
         throw new Error("Missing GEMINI_API_KEY");
     }
 
+    // call gemini model and return text response or error
     const ai = new GoogleGenAI({ apiKey: key });
-
     try {
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
