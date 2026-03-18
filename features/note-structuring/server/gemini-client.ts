@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
+import { SYSTEM_PROMPT } from "../prompts/prompt-builder";
 
-export async function callGemini(prompt: string): Promise<string> {
+export async function callGemini(userPrompt: string): Promise<string> {
 
     // search for existing API key
     const key = process.env.GEMINI_API_KEY;
@@ -14,7 +15,16 @@ export async function callGemini(prompt: string): Promise<string> {
     try {
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
-            contents: prompt,
+            contents: [
+                {
+                    role: "system",
+                    parts: [{ text: SYSTEM_PROMPT }],
+                },
+                {
+                    role: "user",
+                    parts: [{ text: userPrompt }],
+                },
+            ],
         });
 
         const text = response.text;

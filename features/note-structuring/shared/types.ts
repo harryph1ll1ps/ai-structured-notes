@@ -1,5 +1,5 @@
 // supported output modes for structured note generation
-export const MODES = ["summary", "actions", "questions"] as const;
+export const MODES = ["SOAP", "ISBAR", "Clinical Summary"] as const;
 export type Mode = (typeof MODES)[number];
 
 // supported UI states for the structured note request
