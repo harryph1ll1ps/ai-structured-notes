@@ -1,7 +1,7 @@
 "use client";  // run on the client (in the browser), not on the server
 import { useState } from "react";
 import { Mode, Status } from "../../features/note-structuring/shared/types";
-import { structureNote } from "@/features/note-structuring/client/structured-note-client";
+import { postNote } from "@/features/note-structuring/client/post-note";
 import NoteControls from "@/features/note-structuring/components/note-controls";
 import NoteEditor from "@/features/note-structuring/components/note-editor";
 
@@ -9,14 +9,14 @@ export default function HomePage() {
 
   // set state variables
   const [note, setNote] = useState<string>(""); 
-  const [currentMode, setCurrentMode] = useState<Mode>("summary");
+  const [currentMode, setCurrentMode] = useState<Mode>("SOAP");
   const [status, setStatus] = useState<Status>("idle");
 
   // a function for structuring the note
   async function handleGenerate() {
     setStatus("loading");
     try {
-      const output = await structureNote(note, currentMode);
+      const output = await postNote(note, currentMode);
       setNote(output);
       setStatus("idle");
     } catch {

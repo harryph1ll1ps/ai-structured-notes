@@ -1,6 +1,6 @@
 import { StructureRequest, StructureResponse, Mode } from "@/features/note-structuring/shared/types"
   
-export async function structureNote(note: string, mode: Mode): Promise<string> {
+export async function postNote(note: string, mode: Mode): Promise<string> {
     
     // send note and mode to the server
     const payload: StructureRequest = {note, mode};

@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { SYSTEM_PROMPT } from "../prompts/prompt-builder";
+import { SYSTEM_PROMPT } from "../prompts/system-prompt";
 
 export async function callGemini(userPrompt: string): Promise<string> {
 
