@@ -22,8 +22,5 @@ ai-structured-notes
 
 
 <br>
-[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.png?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
-
-![Streamlit](https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white)
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript-125x28.png?v=101)](https://github.com/ellerbrock/typescript-badges/)
