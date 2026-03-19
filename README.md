@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center">
+ai-structured-notes
+</h1>
 
-## Getting Started
+### How it works
 
-First, run the development server:
+1. Type your clinical notes
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/ae29460d-1984-471d-b8d0-67a77410ed3b" />
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Select your preferred format (SOAP, ISBAR, Clinical Summary)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/195ee3f2-bc99-4884-856e-04bbdf37aab1" />
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Generate the structured notes
 
-## Learn More
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/b12dff5c-aee1-4826-9bf8-484c64428a9a" />
 
-To learn more about Next.js, take a look at the following resources:
+7. Iterate on the new output
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/e6221601-d2d6-4305-9dba-1b8c1c976bf5" />
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+<br>
+[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.png?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![Streamlit](https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
